@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { SingleQuestion, QuestionTypes } from "../models/question";
+import { Question, QuestionTypes } from "../models/question";
 
 interface QuizBuilderState {
   quizTitle: string;
-  questionList: SingleQuestion[];
+  questionList: Question[];
 }
 
 export const useQuizBuilderStore = defineStore("quizBuilder", {
@@ -21,7 +21,7 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
   }),
   actions: {
     addQuestion(type: QuestionTypes) {
-      const question: SingleQuestion = {
+      const question: Question = {
         id: new Date().getTime(),
         title: "",
         type,
@@ -30,6 +30,25 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
       };
 
       this.questionList.push(question);
+    },
+    removeQuestion(id: number) {
+      this.questionList = this.questionList.filter(
+        (question) => question.id !== id
+      );
+    },
+    addOption(id: number, option: string) {
+      const question = this.questionList.find((question) => question.id === id);
+      if (question) {
+        question.options.push(option);
+      }
+    },
+    removeOption(id: number, option: string) {
+      const question = this.questionList.find((question) => question.id === id);
+      if (question) {
+        question.options = question.options.filter(
+          (questionOption) => questionOption !== option
+        );
+      }
     },
   },
 });

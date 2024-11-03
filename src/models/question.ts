@@ -6,10 +6,15 @@ export type QuestionTypeList = {
   type: QuestionTypes;
 };
 
-export type SingleQuestion = {
+export type QuestionOption = {
+  title: string;
+  editable: boolean;
+};
+
+export type Question = {
   id: number;
   title: string;
   type: QuestionTypes;
   options: string[];
-  correctAnswer: string;
+  correctAnswer: string | string[];
 };
