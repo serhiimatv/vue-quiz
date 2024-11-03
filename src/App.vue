@@ -1,13 +1,13 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <v-layout class="rounded rounded-md">
     <v-app-bar color="purple-darken-2 pr-16 ga-15" elevation="3">
       <v-app-bar-title class="app-title">Вікторина</v-app-bar-title>
       <RouterLink class="app-link" to="/">Головна</RouterLink>
-      <RouterLink class="app-link" to="/builder">Конструктор вікторини</RouterLink>
+      <RouterLink class="app-link" to="/builder"
+        >Конструктор вікторини</RouterLink
+      >
     </v-app-bar>
 
     <RouterView />

@@ -9,15 +9,7 @@ interface QuizBuilderState {
 export const useQuizBuilderStore = defineStore("quizBuilder", {
   state: (): QuizBuilderState => ({
     quizTitle: "",
-    questionList: [
-      {
-        id: new Date().getTime(),
-        title: "test question",
-        type: "boolean",
-        options: ["Правда", "Не правда"],
-        correctAnswer: "Правда",
-      },
-    ],
+    questionList: [],
   }),
   actions: {
     addQuestion(type: QuestionTypes) {
@@ -26,14 +18,14 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
         title: "",
         type,
         options: type === "boolean" ? ["Правда", "Не правда"] : [],
-        correctAnswer: "",
+        correctAnswer: type === "multiple" ? [] : "",
       };
 
       this.questionList.push(question);
     },
     removeQuestion(id: number) {
       this.questionList = this.questionList.filter(
-        (question) => question.id !== id
+        (question) => question.id !== id,
       );
     },
     addOption(id: number, option: string) {
@@ -46,7 +38,15 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
       const question = this.questionList.find((question) => question.id === id);
       if (question) {
         question.options = question.options.filter(
-          (questionOption) => questionOption !== option
+          (questionOption) => questionOption !== option,
+        );
+      }
+      if (question && question.type !== "multiple") {
+        question.correctAnswer =
+          question.correctAnswer === option ? "" : question.correctAnswer;
+      } else if (question && Array.isArray(question.correctAnswer)) {
+        question.correctAnswer = question.correctAnswer.filter(
+          (questionOption) => questionOption !== option,
         );
       }
     },
