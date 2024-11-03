@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { Question, QuestionTypes } from "../models/question";
+import uniqid from "uniqid";
 
 interface QuizBuilderState {
   quizTitle: string;
@@ -14,7 +15,7 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
   actions: {
     addQuestion(type: QuestionTypes) {
       const question: Question = {
-        id: new Date().getTime(),
+        id: uniqid(),
         title: "",
         type,
         options: type === "boolean" ? ["Правда", "Не правда"] : [],
@@ -23,18 +24,18 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
 
       this.questionList.push(question);
     },
-    removeQuestion(id: number) {
+    removeQuestion(id: string) {
       this.questionList = this.questionList.filter(
         (question) => question.id !== id,
       );
     },
-    addOption(id: number, option: string) {
+    addOption(id: string, option: string) {
       const question = this.questionList.find((question) => question.id === id);
       if (question) {
         question.options.push(option);
       }
     },
-    removeOption(id: number, option: string) {
+    removeOption(id: string, option: string) {
       const question = this.questionList.find((question) => question.id === id);
       if (question) {
         question.options = question.options.filter(

@@ -12,7 +12,7 @@ export type QuestionOption = {
 };
 
 export type Question = {
-  id: number;
+  id: string;
   title: string;
   type: QuestionTypes;
   options: string[];

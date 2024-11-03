@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQuizBuilderStore } from "../store/useQuizBuilderStore";
 import { QuestionTypeList, QuestionTypes } from "../models/question";
+import uniqid from "uniqid";
 import Question from "../components/Question.vue";
 const questionTypesList: QuestionTypeList[] = [
   {
@@ -22,8 +23,19 @@ const questionTypesList: QuestionTypeList[] = [
 
 const quizStore = useQuizBuilderStore();
 
-const handleClick = (type: QuestionTypes) => {
+const handleClickAddQuestion = (type: QuestionTypes) => {
   quizStore.addQuestion(type);
+};
+
+const handleClickSaveQuiz = () => {
+  const quiz = {
+    id: uniqid(),
+    title: quizStore.quizTitle,
+    questions: quizStore.questionList,
+  };
+
+  localStorage.setItem("quiz", JSON.stringify(quiz));
+  console.log("quiz", quiz);
 };
 </script>
 
@@ -45,14 +57,16 @@ const handleClick = (type: QuestionTypes) => {
           <v-list-item
             v-for="type of questionTypesList"
             class="item-title"
-            @click="handleClick(type.type)"
+            @click="handleClickAddQuestion(type.type)"
             :key="type.id"
           >
             <v-list-item-title>{{ type.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn size="x-large" color="primary">Зберегти</v-btn>
+      <v-btn size="x-large" color="primary" @click="handleClickSaveQuiz"
+        >Зберегти</v-btn
+      >
     </div>
     <div class="d-flex flex-column ga-5">
       <Question
