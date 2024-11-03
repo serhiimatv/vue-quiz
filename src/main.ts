@@ -10,6 +10,7 @@ import { aliases, mdi } from "vuetify/iconsets/mdi";
 import "@mdi/font/css/materialdesignicons.css";
 import { router } from "./router";
 import { createPinia } from "pinia";
+import withUUID from "vue-uuid";
 
 const pinia = createPinia();
 
@@ -25,4 +26,4 @@ const vuetify = createVuetify({
   },
 });
 
-createApp(App).use(pinia).use(router).use(vuetify).mount("#app");
+createApp(App).use(pinia).use(router).use(vuetify).use(withUUID).mount("#app");

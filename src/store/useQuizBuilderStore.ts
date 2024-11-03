@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { Question, QuestionTypes } from "../models/question";
-import uniqid from "uniqid";
+import { uuid } from "vue-uuid";
 
 interface QuizBuilderState {
   quizTitle: string;
@@ -15,7 +15,7 @@ export const useQuizBuilderStore = defineStore("quizBuilder", {
   actions: {
     addQuestion(type: QuestionTypes) {
       const question: Question = {
-        id: uniqid(),
+        id: uuid.v4(),
         title: "",
         type,
         options: type === "boolean" ? ["Правда", "Не правда"] : [],

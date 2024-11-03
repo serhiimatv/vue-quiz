@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useQuizBuilderStore } from "../store/useQuizBuilderStore";
 import { QuestionTypeList, QuestionTypes } from "../models/question";
-import uniqid from "uniqid";
 import Question from "../components/Question.vue";
+import { uuid } from "vue-uuid";
 const questionTypesList: QuestionTypeList[] = [
   {
     id: 1,
@@ -29,12 +29,12 @@ const handleClickAddQuestion = (type: QuestionTypes) => {
 
 const handleClickSaveQuiz = () => {
   const quiz = {
-    id: uniqid(),
+    id: uuid.v4(),
     title: quizStore.quizTitle,
     questions: quizStore.questionList,
   };
 
-  localStorage.setItem("quiz", JSON.stringify(quiz));
+  localStorage.setItem("quiz", JSON.stringify([quiz]));
   console.log("quiz", quiz);
 };
 </script>
