@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import QuizBuilder from './pages/QuizBuilder.vue'
-import QuizView from './pages/QuizView.vue'
+import QuizList from './pages/QuizList.vue'
 
 const routes = [
   {
     path: '/',
-    component: QuizView,
+    component: QuizList,
   },
   {
     path: '/builder',
