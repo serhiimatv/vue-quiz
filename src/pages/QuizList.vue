@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Quiz } from '../models/quiz'
 import { useRouter } from 'vue-router'
+import useQuizzesStore from '../store/useQuizzesStore'
 
 const router = useRouter()
+const quizzesStore = useQuizzesStore()
 
-const localStorageQuizString = localStorage.getItem('quiz')
-const localStorageQuiz = localStorageQuizString ? JSON.parse(localStorageQuizString) : []
-
-const quizzes = ref<Quiz[]>(localStorageQuiz)
-
-const deleteQuiz = (id: string) => {
-  const newQuizzes = quizzes.value.filter((quiz) => quiz.id !== id)
-  quizzes.value = newQuizzes
-  localStorage.setItem('quiz', JSON.stringify(newQuizzes))
+const removeQuiz = (id: string) => {
+  quizzesStore.removeQuiz(id)
 }
 
 const editQuiz = (id: string) => {
@@ -23,17 +16,23 @@ const editQuiz = (id: string) => {
 
 <template>
   <v-main class="my-10 px-15 d-flex justify-center items-center">
-    <v-sheet :elevation="21" width="50%" class="pepper rounded-lg">
+    <v-sheet v-if="quizzesStore.quizzes.length !== 0" :elevation="21" width="50%" class="pepper rounded-lg">
       <div class="d-flex flex-column ga-5">
-        <div v-for="quiz of quizzes" class="list-item rounded-lg" :key="quiz.id">
+        <div v-for="quiz of quizzesStore.quizzes" class="list-item rounded-lg" :key="quiz.id">
           {{ quiz.title }}
           <div class="buttons">
             <v-btn icon="mdi-pencil" size="x-small" @click="editQuiz(quiz.id)" />
-            <v-btn icon="mdi-delete" size="x-small" @click="deleteQuiz(quiz.id)" />
+            <v-btn icon="mdi-delete" size="x-small" @click="removeQuiz(quiz.id)" />
           </div>
         </div>
       </div>
     </v-sheet>
+    <div v-else class="header-wrapper">
+      <h1>Поки ще немає вікторин</h1>
+      <v-btn color="primary">
+        <RouterLink to="/builder" class="link">Створити вікторину</RouterLink>
+      </v-btn>
+    </div>
   </v-main>
 </template>
 
@@ -49,11 +48,21 @@ const editQuiz = (id: string) => {
   border: 1px solid black;
   padding: 10px 20px;
   text-decoration: none;
-  color: black;
 }
 .buttons {
   display: flex;
   gap: 10px;
   margin-left: auto;
+}
+.header-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: black;
+}
+.link {
+  color: white;
+  text-decoration: none;
 }
 </style>

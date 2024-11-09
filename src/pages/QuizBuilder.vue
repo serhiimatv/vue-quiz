@@ -7,12 +7,14 @@ import { uuid } from 'vue-uuid'
 import { useRouter } from 'vue-router'
 import { onMounted, onUnmounted } from 'vue'
 import { Quiz } from '../models/quiz'
+import useQuizzesStore from '../store/useQuizzesStore'
 
-const quizStore = useQuizBuilderStore()
+const quizBuilderStore = useQuizBuilderStore()
+const quizzesStore = useQuizzesStore()
 const router = useRouter()
 
 const handleClickAddQuestion = (type: QuestionTypes) => {
-  quizStore.addQuestion(type)
+  quizBuilderStore.addQuestion(type)
 }
 
 const handleClickSaveQuiz = () => {
@@ -28,26 +30,17 @@ const handleClickSaveQuiz = () => {
 const createQuiz = () => {
   const quiz = {
     id: uuid.v4(),
-    title: quizStore.quizTitle,
-    questions: quizStore.questionList,
+    title: quizBuilderStore.quizTitle,
+    questions: quizBuilderStore.questionList,
   }
-
-  const localStorageQuizzes = localStorage.getItem('quiz')
-
-  if (!localStorageQuizzes) {
-    localStorage.setItem('quiz', JSON.stringify([quiz]))
-  } else {
-    const quizzes = JSON.parse(localStorageQuizzes)
-    quizzes.push(quiz)
-    localStorage.setItem('quiz', JSON.stringify(quizzes))
-  }
+  quizzesStore.addQuiz(quiz)
 }
 
 const updateQuiz = (id: string) => {
   const quiz: Quiz = {
     id: id,
-    title: quizStore.quizTitle,
-    questions: quizStore.questionList,
+    title: quizBuilderStore.quizTitle,
+    questions: quizBuilderStore.questionList,
   }
 
   const localStorageQuizzes = localStorage.getItem('quiz')
@@ -73,14 +66,14 @@ onMounted(() => {
       const quiz = quizzes.find((quiz: any) => quiz.id === quizId)
 
       if (quiz) {
-        quizStore.setQuiz(quiz)
+        quizBuilderStore.setQuiz(quiz)
       }
     }
   }
 })
 
 onUnmounted(() => {
-  quizStore.eraseQuiz()
+  quizBuilderStore.eraseQuiz()
 })
 </script>
 
@@ -88,7 +81,7 @@ onUnmounted(() => {
   <v-main class="px-10 pb-10">
     <h1 class="text-center">Конструктор</h1>
     <div class="d-flex ga-5 justify-start mt-5">
-      <v-text-field max-width="350px" label="Назва вікторини" variant="outlined" v-model="quizStore.quizTitle" />
+      <v-text-field max-width="350px" label="Назва вікторини" variant="outlined" v-model="quizBuilderStore.quizTitle" />
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn size="x-large" color="primary" :="props">Додати питання</v-btn>
@@ -107,7 +100,7 @@ onUnmounted(() => {
       <v-btn size="x-large" color="primary" @click="handleClickSaveQuiz">Зберегти</v-btn>
     </div>
     <div class="d-flex flex-column ga-5">
-      <Question v-for="question of quizStore.questionList" :question :key="question.id" />
+      <Question v-for="question of quizBuilderStore.questionList" :question :key="question.id" />
     </div>
   </v-main>
 </template>
