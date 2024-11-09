@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { Question, QuestionTypes } from '../models/question'
 import { uuid } from 'vue-uuid'
+import { Quiz } from '../models/quiz'
 
 interface QuizBuilderState {
   quizTitle: string
@@ -43,6 +44,14 @@ export const useQuizBuilderStore = defineStore('quizBuilder', {
       } else if (question && Array.isArray(question.correctAnswer)) {
         question.correctAnswer = question.correctAnswer.filter((questionOption) => questionOption !== option)
       }
+    },
+    eraseQuiz() {
+      this.quizTitle = ''
+      this.questionList = []
+    },
+    setQuiz(quiz: Quiz) {
+      this.quizTitle = quiz.title
+      this.questionList = quiz.questions
     },
   },
 })
