@@ -34,8 +34,15 @@ const handleClickSaveQuiz = () => {
     questions: quizStore.questionList,
   };
 
-  localStorage.setItem("quiz", JSON.stringify([quiz]));
-  console.log("quiz", quiz);
+  const localStorageQuizzes = localStorage.getItem("quiz");
+
+  if (!localStorageQuizzes) {
+    localStorage.setItem("quiz", JSON.stringify([quiz]));
+  } else {
+    const quizzes = JSON.parse(localStorageQuizzes);
+    quizzes.push(quiz);
+    localStorage.setItem("quiz", JSON.stringify(quizzes));
+  }
 };
 </script>
 
