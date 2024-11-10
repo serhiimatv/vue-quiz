@@ -10,14 +10,10 @@ const removeQuiz = (id: string) => {
 }
 
 const editQuiz = (id: string) => {
-  console.log('edit quiz', id)
-
   router.push({ path: 'builder', query: { id } })
 }
 
 const goToQuiz = (id: string) => {
-  console.log('go to quiz', id)
-
   router.push(`/quiz/${id}`)
 }
 </script>

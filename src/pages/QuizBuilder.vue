@@ -2,7 +2,7 @@
 import { useQuizBuilderStore } from '../store/useQuizBuilderStore'
 import { QuestionTypes } from '../models/question'
 import { questionTypesList } from '../constants'
-import Question from '../components/Question.vue'
+import QuestionBuild from '../components/QuestionBuild.vue'
 import { uuid } from 'vue-uuid'
 import { useRouter } from 'vue-router'
 import { onMounted, onUnmounted } from 'vue'
@@ -89,7 +89,7 @@ onUnmounted(() => {
       <v-btn size="x-large" color="primary" @click="handleClickSaveQuiz">Зберегти</v-btn>
     </div>
     <div class="d-flex flex-column ga-5">
-      <Question v-for="question of quizBuilderStore.questionList" :question :key="question.id" />
+      <QuestionBuild v-for="question of quizBuilderStore.questionList" :question :key="question.id" />
     </div>
   </v-main>
 </template>
