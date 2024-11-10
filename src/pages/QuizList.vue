@@ -10,7 +10,15 @@ const removeQuiz = (id: string) => {
 }
 
 const editQuiz = (id: string) => {
+  console.log('edit quiz', id)
+
   router.push({ path: 'builder', query: { id } })
+}
+
+const goToQuiz = (id: string) => {
+  console.log('go to quiz', id)
+
+  router.push(`/quiz/${id}`)
 }
 </script>
 
@@ -18,11 +26,16 @@ const editQuiz = (id: string) => {
   <v-main class="my-10 px-15 d-flex justify-center items-center">
     <v-sheet v-if="quizzesStore.quizzes.length !== 0" :elevation="21" width="50%" class="pepper rounded-lg">
       <div class="d-flex flex-column ga-5">
-        <div v-for="quiz of quizzesStore.quizzes" class="list-item rounded-lg" :key="quiz.id">
+        <div
+          v-for="quiz of quizzesStore.quizzes"
+          class="list-item rounded-lg"
+          :key="quiz.id"
+          @click="goToQuiz(quiz.id)"
+        >
           {{ quiz.title }}
           <div class="buttons">
-            <v-btn icon="mdi-pencil" size="x-small" @click="editQuiz(quiz.id)" />
-            <v-btn icon="mdi-delete" size="x-small" @click="removeQuiz(quiz.id)" />
+            <v-btn icon="mdi-pencil" size="x-small" @click.stop="editQuiz(quiz.id)" />
+            <v-btn icon="mdi-delete" size="x-small" @click.stop="removeQuiz(quiz.id)" />
           </div>
         </div>
       </div>

@@ -42,18 +42,7 @@ const updateQuiz = (id: string) => {
     title: quizBuilderStore.quizTitle,
     questions: quizBuilderStore.questionList,
   }
-
-  const localStorageQuizzes = localStorage.getItem('quiz')
-
-  if (localStorageQuizzes) {
-    const quizzes = JSON.parse(localStorageQuizzes)
-    const quizIndex = quizzes.findIndex((quiz: any) => quiz.id === id)
-
-    if (quizIndex !== -1) {
-      quizzes[quizIndex] = quiz
-      localStorage.setItem('quiz', JSON.stringify(quizzes))
-    }
-  }
+  quizzesStore.updateQuiz(quiz)
 }
 
 onMounted(() => {

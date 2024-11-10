@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import QuizBuilder from './pages/QuizBuilder.vue'
 import QuizList from './pages/QuizList.vue'
+import Quiz from './pages/Quiz.vue'
 
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
   {
     path: '/builder',
     component: QuizBuilder,
+  },
+  {
+    path: '/quiz/:id',
+    component: Quiz,
   },
 ]
 

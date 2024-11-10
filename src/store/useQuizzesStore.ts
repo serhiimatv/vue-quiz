@@ -13,6 +13,14 @@ const useQuizzesStore = defineStore('quizzes', () => {
     quizzes.value = quizzes.value.filter((quiz) => quiz.id !== id)
   }
 
+  const updateQuiz = (quiz: Quiz) => {
+    const quizIndex = quizzes.value.findIndex((oldQuiz) => oldQuiz.id === quiz.id)
+
+    if (quizIndex !== -1) {
+      quizzes.value[quizIndex] = quiz
+    }
+  }
+
   const setQuizzes = (quizzesList: Quiz[]) => {
     quizzes.value = quizzesList
   }
@@ -41,6 +49,7 @@ const useQuizzesStore = defineStore('quizzes', () => {
     addQuiz,
     removeQuiz,
     setQuizzes,
+    updateQuiz,
   }
 })
 
