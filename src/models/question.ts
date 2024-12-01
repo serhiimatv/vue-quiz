@@ -5,7 +5,7 @@ export type QuestionTypeList = {
   title: string
   type: QuestionTypes
 }
-
+// remove???
 export type QuestionOption = {
   title: string
   editable: boolean

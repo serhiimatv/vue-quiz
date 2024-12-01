@@ -8,6 +8,7 @@ const quizStore = useQuizBuilderStore()
 
 const props = defineProps<{
   question: Question
+  questionNumber: number
 }>()
 
 const answerTitle = ref('')
@@ -44,7 +45,7 @@ const isRadioInputType = computed(() => {
 <template>
   <v-card>
     <template #title>
-      <v-card-title>{{ props.question.title || 'Введіть питання' }}</v-card-title>
+      <v-card-title>Питання №{{ questionNumber }}: {{ props.question.title || 'Введіть питання' }}</v-card-title>
     </template>
     <template #text>
       <div class="d-flex ga-5">

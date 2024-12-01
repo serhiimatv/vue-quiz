@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router'
 import { onMounted, onUnmounted } from 'vue'
 import { Quiz } from '../models/quiz'
 import useQuizzesStore from '../store/useQuizzesStore'
+import { quizValidation } from '../helpers'
 
 const quizBuilderStore = useQuizBuilderStore()
 const quizzesStore = useQuizzesStore()
@@ -18,6 +19,10 @@ const handleClickAddQuestion = (type: QuestionTypes) => {
 }
 
 const handleClickSaveQuiz = () => {
+  if (!quizValidation(quizBuilderStore)) {
+    return
+  }
+
   if (router.currentRoute.value.query.id) {
     updateQuiz(router.currentRoute.value.query.id as string)
   } else {
@@ -89,7 +94,12 @@ onUnmounted(() => {
       <v-btn size="x-large" color="primary" @click="handleClickSaveQuiz">Зберегти</v-btn>
     </div>
     <div class="d-flex flex-column ga-5">
-      <QuestionBuild v-for="question of quizBuilderStore.questionList" :question :key="question.id" />
+      <QuestionBuild
+        v-for="(question, index) of quizBuilderStore.questionList"
+        :question
+        :question-number="index + 1"
+        :key="question.id"
+      />
     </div>
   </v-main>
 </template>

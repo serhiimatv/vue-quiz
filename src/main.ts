@@ -12,6 +12,11 @@ import { router } from './router'
 import { createPinia } from 'pinia'
 import withUUID from 'vue-uuid'
 
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
+
+const app = createApp(App)
+
 const pinia = createPinia()
 
 const vuetify = createVuetify({
@@ -26,4 +31,13 @@ const vuetify = createVuetify({
   },
 })
 
-createApp(App).use(pinia).use(router).use(vuetify).use(withUUID).mount('#app')
+app.use(pinia)
+app.use(router)
+app.use(vuetify)
+app.use(withUUID)
+
+app.use(Vue3Toastify, {
+  limit: 3,
+} as ToastContainerOptions)
+
+app.mount('#app')

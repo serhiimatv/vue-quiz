@@ -1,12 +1,7 @@
 import { defineStore } from 'pinia'
 import { Question, QuestionTypes } from '../models/question'
 import { uuid } from 'vue-uuid'
-import { Quiz } from '../models/quiz'
-
-interface QuizBuilderState {
-  quizTitle: string
-  questionList: Question[]
-}
+import { Quiz, QuizBuilderState } from '../models/quiz'
 
 export const useQuizBuilderStore = defineStore('quizBuilder', {
   state: (): QuizBuilderState => ({

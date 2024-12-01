@@ -5,3 +5,8 @@ export type Quiz = {
   title: string
   questions: Question[]
 }
+
+export interface QuizBuilderState {
+  quizTitle: string
+  questionList: Question[]
+}
