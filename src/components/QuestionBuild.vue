@@ -2,36 +2,37 @@
 import { computed, ref } from 'vue'
 import { Question } from '../models/question'
 import { useQuizBuilderStore } from '../store/useQuizBuilderStore'
-import { VALIDATION_ANSWER_MESSAGE } from '../constants'
+import type { VTextField } from 'vuetify/components'
+import useValidationRules from '../composables/useValidationRules'
 
 const quizStore = useQuizBuilderStore()
+const { required, duplicateAnswer } = useValidationRules()
 
 const props = defineProps<{
   question: Question
   questionNumber: number
 }>()
 
-const answerTitle = ref('')
-const validateAnswerTitle = ref('')
+const answerTitle = ref<string | null>(null)
+const answerTitleInputRef = ref<VTextField | null>(null)
+
+const answerTitleRules = computed(() => {
+  return [required, duplicateAnswer(props.question.options)]
+})
 
 const handleClickRemove = () => {
   quizStore.removeQuestion(props.question.id)
 }
 
 const handleClickAddOption = () => {
-  if (answerTitle.value === '') {
-    validateAnswerTitle.value = VALIDATION_ANSWER_MESSAGE.empty
+  if (!answerTitleInputRef.value?.isValid) {
     return
   }
-
-  if (props.question.options.find((option) => option.toLocaleLowerCase() === answerTitle.value.toLocaleLowerCase())) {
-    validateAnswerTitle.value = VALIDATION_ANSWER_MESSAGE.duplicate
-    return
+  if (answerTitle.value) {
+    quizStore.addOption(props.question.id, answerTitle.value)
+    answerTitleInputRef.value?.reset()
+    answerTitleInputRef.value?.resetValidation()
   }
-
-  quizStore.addOption(props.question.id, answerTitle.value)
-  answerTitle.value = ''
-  validateAnswerTitle.value = ''
 }
 const handleClickRemoveOption = (option: string) => {
   quizStore.removeOption(props.question.id, option)
@@ -49,16 +50,23 @@ const isRadioInputType = computed(() => {
     </template>
     <template #text>
       <div class="d-flex ga-5">
-        <v-text-field max-width="350px" label="Питання" variant="outlined" v-model.trim="props.question.title" />
+        <v-text-field
+          max-width="350px"
+          label="Питання"
+          variant="outlined"
+          v-model.trim="props.question.title"
+          :rules="[required]"
+        />
         <v-btn size="x-large" color="red" @click="handleClickRemove">Видалити</v-btn>
       </div>
       <div v-if="props.question.type !== 'boolean'" class="d-flex ga-5">
         <v-text-field
+          ref="answerTitleInputRef"
           max-width="350px"
           label="Відповідь"
           variant="outlined"
           v-model.trim="answerTitle"
-          :error-messages="validateAnswerTitle"
+          :rules="answerTitleRules"
         />
         <v-btn size="x-large" color="green" @click="handleClickAddOption">Додати відповідь</v-btn>
       </div>
