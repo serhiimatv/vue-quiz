@@ -61,6 +61,14 @@ const useQuizStore = defineStore('quiz', () => {
     activeQuestionChooseOption.value = []
   }
 
+  const resetQuiz = () => {
+    quiz.value = null
+    questionIndex.value = 0
+    activeQuestionChooseOption.value = []
+    score.value = 0
+    isQuizFinished.value = false
+  }
+
   return {
     quiz,
     setQuiz,
@@ -71,6 +79,7 @@ const useQuizStore = defineStore('quiz', () => {
     nextQuestion,
     score,
     isQuizFinished,
+    resetQuiz
   }
 })
 

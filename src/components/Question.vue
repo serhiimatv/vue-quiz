@@ -3,6 +3,11 @@ import { router } from '../router'
 import useQuizStore from '../store/useQuizStore'
 
 const quizStore = useQuizStore()
+
+const toMainPageAndResetQuiz = () => {
+  quizStore.resetQuiz()
+  router.push('/')
+}
 </script>
 
 <template>
@@ -67,7 +72,7 @@ const quizStore = useQuizStore()
     </v-row>
     <v-row>
       <v-col>
-        <v-btn color="primary" @click="router.push('/')"> На головну</v-btn>
+        <v-btn color="primary" @click="toMainPageAndResetQuiz"> На головну</v-btn>
       </v-col>
     </v-row>
   </v-sheet>
